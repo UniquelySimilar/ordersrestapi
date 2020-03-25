@@ -1,0 +1,7 @@
+.classpath
+.project
+.mvn/
+.settings/
+HELP.md
+target/
+src/main/webapp/META-INF/context.xml
