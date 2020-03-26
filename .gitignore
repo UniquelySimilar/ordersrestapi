@@ -4,4 +4,4 @@
 .settings/
 HELP.md
 target/
-src/main/webapp/META-INF/context.xml
+src/main/resources/application.properties
