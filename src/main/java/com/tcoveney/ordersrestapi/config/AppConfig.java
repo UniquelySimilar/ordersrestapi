@@ -4,8 +4,9 @@ import java.util.List;
 import java.util.Properties;
 
 import javax.naming.NamingException;
-import javax.sql.DataSource;
 
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -14,7 +15,6 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.jndi.JndiTemplate;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -23,16 +23,18 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
+import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
 @EnableTransactionManagement
 @EnableWebMvc
 @ComponentScan(basePackages = "com.tcoveney")
-public class AppConfig implements WebMvcConfigurer {
-	@Bean(destroyMethod="")
-	DataSource dataSource() throws NamingException {
-		JndiTemplate jndiTemplate = new JndiTemplate();
-		return (DataSource)jndiTemplate.lookup("java:comp/env/jdbc/ordersdb");
+public class AppConfig implements WebMvcConfigurer {	
+	// NOTE: DataSource properties are set in 'application.properties'
+	@Bean
+	@ConfigurationProperties("app.datasource")
+	public HikariDataSource dataSource() {
+	    return DataSourceBuilder.create().type(HikariDataSource.class).build();
 	}
 	
 	@Bean
