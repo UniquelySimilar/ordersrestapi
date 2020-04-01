@@ -3,21 +3,20 @@ package com.tcoveney.ordersrestapi.dao;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tcoveney.ordersrestapi.model.Customer;
-import com.tcoveney.ordersrestapi.model.Order;
 
 @Repository
 @Transactional
 public class CustomerDaoHibernateImpl implements CustomerDao {
-	private static final Logger logger = LogManager.getLogger(CustomerDaoHibernateImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(CustomerDaoHibernateImpl.class);
     private SessionFactory sessionFactory;
 
     @Autowired
@@ -28,6 +27,7 @@ public class CustomerDaoHibernateImpl implements CustomerDao {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<Customer> findAll() {
+		//logger.debug("Called 'findAll()'");
 		Session session = sessionFactory.getCurrentSession();
 		return session.createQuery("from Customer").list();
 	}

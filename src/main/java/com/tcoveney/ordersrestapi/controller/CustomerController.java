@@ -6,8 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -34,7 +34,7 @@ import com.tcoveney.ordersrestapi.validator.ValidationUtils;
 // "http://vue-client-for-spring-rest.localhost" - Apache2 virtualhost for vue client
 @CrossOrigin(origins = {"http://localhost:9000", "http://vue-client-for-spring-rest.localhost"})
 public class CustomerController {
-	private static final Logger logger = LogManager.getLogger(CustomerController.class);
+	private static final Logger logger = LoggerFactory.getLogger(CustomerController.class);
 
 	@Autowired
 	private ValidationUtils validationUtils;
@@ -47,7 +47,7 @@ public class CustomerController {
 
 	@GetMapping("/")
 	public List<Customer> findAll() {
-		
+		//logger.debug("Called 'findAll()'");
 		List<Customer> customers = customerDao.findAll();
 		
 		return customers;	

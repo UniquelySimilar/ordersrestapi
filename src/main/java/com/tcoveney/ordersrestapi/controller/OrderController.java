@@ -3,8 +3,8 @@ package com.tcoveney.ordersrestapi.controller;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -28,7 +28,7 @@ import com.tcoveney.ordersrestapi.validator.ValidationUtils;
 // "http://vue-client-for-spring-rest.localhost" - Apache2 virtualhost for vue client
 @CrossOrigin(origins = {"http://localhost:9000", "http://vue-client-for-spring-rest.localhost"})
 public class OrderController {
-	private static final Logger logger = LogManager.getLogger(OrderController.class);
+	private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
 	
 	@Autowired
 	private ValidationUtils validationUtils;
@@ -38,6 +38,7 @@ public class OrderController {
 	
 	@GetMapping("/{id}")
 	public Order find(@PathVariable int id) {
+		//logger.debug("Called 'find()'");
 		Order order = orderDao.find(id);
 		if (null == order) {
 			throw new ResourceNotFoundException();
