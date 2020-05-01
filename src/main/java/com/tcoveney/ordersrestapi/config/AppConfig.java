@@ -23,6 +23,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
+import com.tcoveney.ordersrestapi.model.Customer;
+import com.tcoveney.ordersrestapi.model.Order;
 import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
@@ -41,8 +43,9 @@ public class AppConfig implements WebMvcConfigurer {
 	LocalSessionFactoryBean hibernateSessionFactory() throws NamingException {
 		LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
 		sessionFactory.setDataSource(dataSource());
-		sessionFactory.setConfigLocation(new ClassPathResource("hibernate.cfg.xml"));
+		sessionFactory.setAnnotatedClasses(Customer.class, Order.class);
 		sessionFactory.setHibernateProperties(hibernateProperties());
+		
 		return sessionFactory;
 	}
 	
