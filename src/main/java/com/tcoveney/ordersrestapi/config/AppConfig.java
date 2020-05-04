@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
@@ -25,6 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import com.tcoveney.ordersrestapi.model.Customer;
 import com.tcoveney.ordersrestapi.model.Order;
+import com.tcoveney.ordersrestapi.model.TokenUser;
 import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
@@ -43,7 +43,7 @@ public class AppConfig implements WebMvcConfigurer {
 	LocalSessionFactoryBean hibernateSessionFactory() throws NamingException {
 		LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
 		sessionFactory.setDataSource(dataSource());
-		sessionFactory.setAnnotatedClasses(Customer.class, Order.class);
+		sessionFactory.setAnnotatedClasses(Customer.class, Order.class, TokenUser.class);
 		sessionFactory.setHibernateProperties(hibernateProperties());
 		
 		return sessionFactory;
