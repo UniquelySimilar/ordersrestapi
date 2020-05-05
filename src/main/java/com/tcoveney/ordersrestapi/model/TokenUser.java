@@ -14,7 +14,7 @@ import javax.persistence.TemporalType;
 public class TokenUser {
 	@Id
 	@Column(name="username", unique=true, nullable=false)
-	private String userName;
+	private String username;
 	
 	@Column(nullable=false)
 	private String password;
@@ -30,11 +30,11 @@ public class TokenUser {
 	private boolean enabled;
 
 	public String getUserName() {
-		return userName;
+		return username;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUserName(String username) {
+		this.username = username;
 	}
 
 	public String getPassword() {
@@ -71,7 +71,7 @@ public class TokenUser {
 
 	@Override
 	public String toString() {
-		return "TokenUser [userName=" + userName + ", password=" + password + ", token=" + token + ", tokenExp="
+		return "TokenUser [username=" + username + ", password=" + password + ", token=" + token + ", tokenExp="
 				+ tokenExp + ", enabled=" + enabled + "]";
 	}
 

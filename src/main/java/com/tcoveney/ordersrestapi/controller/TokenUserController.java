@@ -1,8 +1,12 @@
 package com.tcoveney.ordersrestapi.controller;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,11 +25,19 @@ public class TokenUserController {
 	private TokenUserDao tokenUserDao;
 	
 	@PostMapping("/login")
-	public String login(@RequestBody TokenUser tokenUser) {
+	public String login(@RequestBody TokenUser tokenUser, HttpServletResponse response) {
 		logger.debug("called 'login()'");
-		TokenUser user = tokenUserDao.find(tokenUser.getUserName());
+		try {
+			TokenUser user = tokenUserDao.find(tokenUser.getUserName());
+		}
+		catch (DataAccessException dae) {
+			System.err.print(dae);
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			return "Unable to login. Contact admin.";
+			
+			//return new ResponseEntity<String>("Unable to login. Contact admin.", responseHeaders, HttpStatus.CREATED);
+		}
 		
-		// TODO: Possibly catch except NoResultException or NonUniqueResultException and convert to http status code
 		// TODO: Retrieve token and set to user
 		// TODO: Calculate expiration timestamp and set to user
 		// TODO: Return status code

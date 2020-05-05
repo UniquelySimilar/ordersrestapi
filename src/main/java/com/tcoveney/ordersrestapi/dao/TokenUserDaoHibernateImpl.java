@@ -1,5 +1,7 @@
 package com.tcoveney.ordersrestapi.dao;
 
+import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
@@ -22,12 +24,20 @@ public class TokenUserDaoHibernateImpl implements TokenUserDao {
     }
 
 	@Override
-	public TokenUser find(String userName) {
-		// TODO: Determine how to handle NoResultException.
-		// Trying to throw it from here to controller did not work.
+	@SuppressWarnings("unchecked")
+	public TokenUser find(String username, String password) {
+		TokenUser tokenUser = null;
 		Session session = sessionFactory.getCurrentSession();
-		String hql = "from TokenUser where userName = :userName";
-		return (TokenUser)session.createQuery(hql).setParameter("userName", userName).getSingleResult();
+		String hql = "from TokenUser where username = :username and password = :password";
+		List<TokenUser> tokenUsers = session.createQuery(hql)
+				.setParameter("username", username)
+				.setParameter("password", password)
+				.list();
+		if (tokenUsers.size() == 1) {
+			tokenUser = tokenUsers.get(0);
+		}
+		
+		return tokenUser;
 	}
 
 	@Override
@@ -35,6 +45,12 @@ public class TokenUserDaoHibernateImpl implements TokenUserDao {
 		Session session = sessionFactory.getCurrentSession();
 		String hql = "from TokenUser where token = :token";
 		return (TokenUser)session.createQuery(hql).setParameter("token", token).getSingleResult();
+	}
+
+	@Override
+	public void update(TokenUser tokenUser) {
+		Session session = sessionFactory.getCurrentSession();
+		session.update(tokenUser);
 	}
 
 }

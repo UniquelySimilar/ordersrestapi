@@ -26,8 +26,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		// TODO: Temporarily permit access to all endpoints by all users for initial testing.  Disable CSRF to test POST.
-		http.authorizeRequests()
-    	.antMatchers("/**").permitAll().and().csrf().disable();
+		http.authorizeRequests().antMatchers("/api/token/login").permitAll()
+		//.and().csrf().disable();
+		.anyRequest().authenticated();
 	}
 
 	@Bean
