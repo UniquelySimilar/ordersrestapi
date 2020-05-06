@@ -28,7 +28,7 @@ public class TokenUserController {
 	public String login(@RequestBody TokenUser tokenUser, HttpServletResponse response) {
 		logger.debug("called 'login()'");
 		try {
-			TokenUser user = tokenUserDao.find(tokenUser.getUserName());
+			TokenUser user = tokenUserDao.find(tokenUser.getUserName(), tokenUser.getPassword());
 		}
 		catch (DataAccessException dae) {
 			System.err.print(dae);

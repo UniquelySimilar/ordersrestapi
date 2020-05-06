@@ -1,6 +1,7 @@
 package com.tcoveney.ordersrestapi.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -36,15 +37,25 @@ public class TokenUserDaoHibernateImpl implements TokenUserDao {
 		if (tokenUsers.size() == 1) {
 			tokenUser = tokenUsers.get(0);
 		}
+		else {
+			logger.warn("Number of users matching username and password: " + tokenUsers.size());
+		}
 		
 		return tokenUser;
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public TokenUser findByToken(String token) {
+		TokenUser tokenUser = null;
 		Session session = sessionFactory.getCurrentSession();
 		String hql = "from TokenUser where token = :token";
-		return (TokenUser)session.createQuery(hql).setParameter("token", token).getSingleResult();
+		List<TokenUser> tokenUsers = session.createQuery(hql).setParameter("token", token).list();
+		if (tokenUsers.size() == 1) {
+			tokenUser = tokenUsers.get(0);
+		}
+		
+		return tokenUser;
 	}
 
 	@Override
