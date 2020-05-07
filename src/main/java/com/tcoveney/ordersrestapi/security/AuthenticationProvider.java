@@ -2,6 +2,8 @@ package com.tcoveney.ordersrestapi.security;
 
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider;
@@ -14,6 +16,8 @@ import com.tcoveney.ordersrestapi.service.TokenUserService;
 
 @Component
 public class AuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
+	private static final Logger logger = LoggerFactory.getLogger(AuthenticationProvider.class);
+
 	@Autowired
 	private TokenUserService tokenUserService;
 
@@ -27,6 +31,7 @@ public class AuthenticationProvider extends AbstractUserDetailsAuthenticationPro
 	@Override
 	protected UserDetails retrieveUser(String userName, UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken)
 			throws AuthenticationException {
+		logger.debug("called 'retrieveUser()'");
 		Object token = usernamePasswordAuthenticationToken.getCredentials();
 		return Optional
 				.ofNullable(token)
