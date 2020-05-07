@@ -56,7 +56,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	AuthenticationFilter authenticationFilter() throws Exception {
 		final AuthenticationFilter filter = new AuthenticationFilter(PROTECTED_URLS);
 		filter.setAuthenticationManager(authenticationManager());
-		// filter.setAuthenticationSuccessHandler(successHandler());
 		return filter;
 	}
 

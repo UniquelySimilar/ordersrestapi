@@ -22,7 +22,7 @@ public class TokenController {
 			@RequestParam("password") final String password) {
 		String token = tokenUserService.login(username, password);
 		if (StringUtils.isEmpty(token)) {
-			return "no token found";
+			return "Token could not be obtained. Contact Admin.";
 		}
 
 		return token;

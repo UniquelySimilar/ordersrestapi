@@ -41,6 +41,9 @@ public class TokenUserService {
 			tokenUserDao.update(tokenUser);
 			retVal = token;
 		}
+		else {
+			logger.warn("User " + username + " either doesn't exist or password incorrect");
+		}
 		
 		return retVal;
 	}
