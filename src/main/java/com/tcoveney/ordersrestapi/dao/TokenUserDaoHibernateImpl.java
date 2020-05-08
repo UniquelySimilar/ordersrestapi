@@ -1,7 +1,9 @@
 package com.tcoveney.ordersrestapi.dao;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -54,10 +56,20 @@ public class TokenUserDaoHibernateImpl implements TokenUserDao {
 	@Override
 	@SuppressWarnings("unchecked")
 	public TokenUser findByToken(String token) {
+		//logger.debug("called findByToken()");
 		TokenUser tokenUser = null;
 		Session session = sessionFactory.getCurrentSession();
-		String hql = "from TokenUser where token = :token";
-		List<TokenUser> tokenUsers = session.createQuery(hql).setParameter("token", token).list();
+
+		// Check to see if token has expired (24 hrs)
+		Date currentDate = new Date();
+		LocalDateTime expLocalDateTime = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().plusDays(1);
+		Date expDate = Date.from(expLocalDateTime.atZone(ZoneId.systemDefault()).toInstant());
+
+		String hql = "from TokenUser where token = :token and tokenExp > :expDate";
+		List<TokenUser> tokenUsers = session.createQuery(hql)
+				.setParameter("token", token)
+				.setParameter("expDate", expDate)
+				.list();
 		if (tokenUsers.size() == 1) {
 			tokenUser = tokenUsers.get(0);
 		}
