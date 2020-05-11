@@ -51,7 +51,6 @@ public class TokenUserService {
 	public Optional<User> findByToken(String token) {
 		TokenUser tokenUser = tokenUserDao.findByToken(token);
 		if(null != tokenUser){
-			// TODO: Add token expiration date check
 			User user= new User(tokenUser.getUserName(), tokenUser.getPassword(), true, true, true, true,
 					AuthorityUtils.createAuthorityList("USER"));
 			return Optional.of(user);

@@ -31,6 +31,7 @@ public class TokenUserDaoHibernateImpl implements TokenUserDao {
 	@Override
 	@SuppressWarnings("unchecked")
 	public TokenUser find(String username, String password) {
+		//logger.debug("called find()");
 		TokenUser tokenUser = null;
 		Session session = sessionFactory.getCurrentSession();
 		String hql = "from TokenUser where username = :username";
@@ -56,22 +57,22 @@ public class TokenUserDaoHibernateImpl implements TokenUserDao {
 	@Override
 	@SuppressWarnings("unchecked")
 	public TokenUser findByToken(String token) {
-		//logger.debug("called findByToken()");
+		//logger.debug("called findByToken() for " + token);
 		TokenUser tokenUser = null;
 		Session session = sessionFactory.getCurrentSession();
 
 		// Check to see if token has expired (24 hrs)
 		Date currentDate = new Date();
-		LocalDateTime expLocalDateTime = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime().plusDays(1);
-		Date expDate = Date.from(expLocalDateTime.atZone(ZoneId.systemDefault()).toInstant());
-
-		String hql = "from TokenUser where token = :token and tokenExp > :expDate";
+		String hql = "from TokenUser where token = :token and tokenExp > :currentDate";
 		List<TokenUser> tokenUsers = session.createQuery(hql)
 				.setParameter("token", token)
-				.setParameter("expDate", expDate)
+				.setParameter("currentDate", currentDate)
 				.list();
 		if (tokenUsers.size() == 1) {
 			tokenUser = tokenUsers.get(0);
+		}
+		else {
+			logger.warn("User token either not found or expired");
 		}
 		
 		return tokenUser;
