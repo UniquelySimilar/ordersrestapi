@@ -45,11 +45,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
-		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().exceptionHandling().and()
-				.authenticationProvider(authenticationProvider)
-				.addFilterBefore(authenticationFilter(), AnonymousAuthenticationFilter.class).authorizeRequests()
-				.requestMatchers(PROTECTED_URLS).authenticated().and().csrf().disable().formLogin().disable()
-				.httpBasic().disable().logout().disable();
+		http.sessionManagement()
+		.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+		.and().exceptionHandling()
+		.and()
+		.authenticationProvider(authenticationProvider)
+		.addFilterBefore(authenticationFilter(), AnonymousAuthenticationFilter.class)
+		.authorizeRequests()
+		.requestMatchers(PROTECTED_URLS)
+		.authenticated()
+		.and()
+		.csrf().disable()
+		.formLogin().disable()
+		.httpBasic().disable()
+		.logout().disable()
+		.cors();
 	}
 
 	@Bean
