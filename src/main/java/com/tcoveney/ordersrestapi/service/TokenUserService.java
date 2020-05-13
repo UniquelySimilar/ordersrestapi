@@ -51,7 +51,7 @@ public class TokenUserService {
 	public Optional<User> findByToken(String token) {
 		TokenUser tokenUser = tokenUserDao.findByToken(token);
 		if(null != tokenUser){
-			User user= new User(tokenUser.getUserName(), tokenUser.getPassword(), true, true, true, true,
+			User user= new User(tokenUser.getUsername(), tokenUser.getPassword(), true, true, true, true,
 					AuthorityUtils.createAuthorityList("USER"));
 			return Optional.of(user);
         }
