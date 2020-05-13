@@ -11,18 +11,18 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tcoveney.ordersrestapi.service.TokenUserService;
 
 @RestController
-public class TokenController {
-	private static final Logger logger = LoggerFactory.getLogger(TokenController.class);
+public class LoginController {
+	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
 	@Autowired
 	private TokenUserService tokenUserService;
 
-	@PostMapping("/token")
-	public String getToken(@RequestParam("username") final String username,
+	@PostMapping("/login")
+	public String login(@RequestParam("username") final String username,
 			@RequestParam("password") final String password) {
 		String token = tokenUserService.login(username, password);
 		if (StringUtils.isEmpty(token)) {
-			return "Token could not be obtained. Contact Admin.";
+			return "User could not be logged in. Contact Admin.";
 		}
 
 		return token;
