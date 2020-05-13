@@ -37,11 +37,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(final AuthenticationManagerBuilder auth) {
 		auth.authenticationProvider(authenticationProvider);
 	}
-
-	@Override
-	public void configure(final WebSecurity webSecurity) {
-		webSecurity.ignoring().antMatchers("/token/**");
-	}
+	
+	// From tutorial but not needed since PROTECTED_URLS defined
+//	@Override
+//	public void configure(final WebSecurity webSecurity) {
+//		webSecurity.ignoring().antMatchers("/token/**");
+//	}
 
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
