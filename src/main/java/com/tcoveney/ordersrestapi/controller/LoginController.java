@@ -38,7 +38,7 @@ public class LoginController {
 		}
 		else {
 			responseInfo.setError("Unauthorized");
-			responseInfo.setMessage("User could not be logged in. Contact Admin.");
+			responseInfo.setMessage("Invalid username or password");
 			httpStatus = HttpStatus.UNAUTHORIZED;
 		}
 		
