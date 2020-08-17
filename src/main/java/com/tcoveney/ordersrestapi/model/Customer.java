@@ -44,16 +44,17 @@ public class Customer {
 	private String zipcode;
 
 	@Column(name = "home_phone")
-	@Pattern(regexp = "\\d{3}\\-\\d{3}\\-\\d{4}")	// Accept only format nnn-nnn-nnnn
+	@Pattern(regexp = "\\d{10}")	// Accept only 10 digits
 	//@Pattern(regexp = "\\d{10}|\\d{3}[-\\.\\s]\\d{3}[-\\.\\s]\\d{4}|\\(\\d{3}\\)\\d{3}-\\d{4}")	// Test all three patterns
 	//validate phone numbers of format "1234567890": regexp = "\\d{10}"
 	//validating phone number with -, . or spaces: regexp = "\\d{3}[-\\.\\s]\\d{3}[-\\.\\s]\\d{4}"
 	//validating phone number where area code is in braces (): regexp = "\\(\\d{3}\\)\\d{3}-\\d{4}"
+	//validating phone number with only format nnn-nnn-nnnn: regexp = "\\d{3}\\-\\d{3}\\-\\d{4}"
 	private String homePhone;
 
-	// TODO: Use above @Pattern OR'd with empty pattern since not required
+	// Use above @Pattern OR'd with empty pattern since not required
 	@Column(name = "work_phone")
-	@Pattern(regexp = "^$|\\d{3}\\-\\d{3}\\-\\d{4}")	// Accept only format nnn-nnn-nnnn
+	@Pattern(regexp = "^$|\\d{10}")	// Accept only 10 digits
 	private String workPhone;
 	
 	@NotBlank
