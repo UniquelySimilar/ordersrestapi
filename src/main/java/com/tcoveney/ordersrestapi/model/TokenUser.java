@@ -10,7 +10,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name = "tokenusers")
+@Table(name = "tokenusersspring")
 public class TokenUser {
 	@Id
 	@Column(name="username", unique=true, nullable=false)

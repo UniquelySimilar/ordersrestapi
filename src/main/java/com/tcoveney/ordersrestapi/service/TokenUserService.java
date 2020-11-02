@@ -58,5 +58,13 @@ public class TokenUserService {
 
 		return  Optional.empty();
 	}
+	
+	public TokenUser findByTokenOnly(String token) {
+		return tokenUserDao.findByTokenOnly(token);
+	}
+	
+	public void update(TokenUser tokenUser) {
+		tokenUserDao.update(tokenUser);
+	}
 
 }

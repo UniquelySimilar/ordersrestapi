@@ -79,6 +79,22 @@ public class TokenUserDaoHibernateImpl implements TokenUserDao {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
+	public TokenUser findByTokenOnly(String token) {
+		//logger.debug("called findByTokenOnly() for " + token);
+		TokenUser tokenUser = null;
+		Session session = sessionFactory.getCurrentSession();
+
+		String hql = "from TokenUser where token = :token";
+		tokenUser = (TokenUser)session.createQuery(hql)
+				.setParameter("token", token)
+				.getSingleResult();
+			logger.warn("User token not found");
+		
+		return tokenUser;
+	}
+
+	@Override
 	public void update(TokenUser tokenUser) {
 		Session session = sessionFactory.getCurrentSession();
 		session.update(tokenUser);
