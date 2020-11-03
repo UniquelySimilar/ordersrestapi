@@ -1,6 +1,7 @@
 package com.tcoveney.ordersrestapi.model;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -68,7 +70,13 @@ public class Customer {
 	@Column(name = "updated_at")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date updatedAt;
-		
+
+	@Transient
+	// This implementation of Transient keeps Hibernate from trying to map/persist this property,
+	// but still includes it in any Jackson conversion for a JSON response.
+	private List<Order> orders;
+
+
 	public Integer getId() {
 		return id;
 	}
@@ -163,6 +171,14 @@ public class Customer {
 	
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
+	}
+
+	public List<Order> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(List<Order> orders) {
+		this.orders = orders;
 	}
 
 	@Override

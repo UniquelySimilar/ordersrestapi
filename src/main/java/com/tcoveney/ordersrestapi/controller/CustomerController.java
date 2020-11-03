@@ -24,7 +24,6 @@ import com.tcoveney.ordersrestapi.dao.CustomerDao;
 import com.tcoveney.ordersrestapi.dao.OrderDao;
 import com.tcoveney.ordersrestapi.exception.ResourceNotFoundException;
 import com.tcoveney.ordersrestapi.model.Customer;
-import com.tcoveney.ordersrestapi.model.CustomerWithOrders;
 import com.tcoveney.ordersrestapi.model.Order;
 import com.tcoveney.ordersrestapi.validator.ValidationUtils;
 
@@ -76,18 +75,16 @@ public class CustomerController {
 	}
 	
 	@GetMapping("/{customerId}/orders")
-	public CustomerWithOrders findWithOrders(@PathVariable int customerId, HttpServletResponse response){
-		CustomerWithOrders cwo = new CustomerWithOrders();
+	public Customer findWithOrders(@PathVariable int customerId, HttpServletResponse response){
 		Customer customer = customerDao.find(customerId);
 		if (null == customer) {
 			throw new ResourceNotFoundException();
 		}
 		else {
 			List<Order> orders = orderDao.findByCustomer(customerId);
-			cwo.setCustomer(customer);
-			cwo.setOrders(orders);
+			customer.setOrders(orders);
 		}
-		return cwo;
+		return customer;
 	}
 	
 	@PostMapping(value = "/", headers = "content-type=application/json")
