@@ -1,7 +1,5 @@
 package com.tcoveney.ordersrestapi.dao;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
@@ -79,7 +77,6 @@ public class TokenUserDaoHibernateImpl implements TokenUserDao {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public TokenUser findByTokenOnly(String token) {
 		//logger.debug("called findByTokenOnly() for " + token);
 		TokenUser tokenUser = null;
