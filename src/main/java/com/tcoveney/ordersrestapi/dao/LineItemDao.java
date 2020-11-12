@@ -6,4 +6,5 @@ import com.tcoveney.ordersrestapi.model.LineItem;
 
 public interface LineItemDao {
 	List<LineItem> findAll();
+	int insert(LineItem lineItem);
 }

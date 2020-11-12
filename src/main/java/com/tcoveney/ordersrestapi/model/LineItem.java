@@ -33,7 +33,7 @@ public class LineItem {
 	@DecimalMin(value="0.01")
 	@Digits(integer=8, fraction=2)
 	private BigDecimal unitPrice;
-
+	
 	private Integer quantity;
 	
 	// NOTE: These properties are set in the database
