@@ -62,7 +62,6 @@ public class CustomerDaoHibernateImpl implements CustomerDao {
 	@Override
 	public void update(Customer customer) {
 		Session session = sessionFactory.getCurrentSession();
-		customer.setUpdatedAt(new Date());
 		// NOTE: When using 'merge()' instead of 'update()', if record with this customer.id did not exist,
 		// a new record was created, which is NOT what I want here.
 		session.update(customer);

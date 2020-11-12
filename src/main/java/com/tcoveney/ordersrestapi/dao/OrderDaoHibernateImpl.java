@@ -54,7 +54,6 @@ public class OrderDaoHibernateImpl implements OrderDao {
 	@Override
 	public void update(Order order) {
 		Session session = sessionFactory.getCurrentSession();
-		order.setUpdatedAt(new Date());
 		session.update(order);
 	}
 

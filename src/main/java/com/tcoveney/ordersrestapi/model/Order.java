@@ -108,16 +108,8 @@ public class Order {
 		return createdAt;
 	}
 
-	public void setCreatedAt(java.util.Date createdAt) {
-		this.createdAt = createdAt;
-	}
-
 	public java.util.Date getUpdatedAt() {
 		return updatedAt;
-	}
-
-	public void setUpdatedAt(java.util.Date updatedAt) {
-		this.updatedAt = updatedAt;
 	}
 
 	public List<LineItem> getLineItems() {
