@@ -13,6 +13,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="line_items")
@@ -21,7 +22,8 @@ public class LineItem {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@Column(name="order_id", nullable=false, updatable=false)
+	@Column(name="order_id", updatable=false)
+	@NotNull
 	private Integer orderId;
 
 	// TODO: Update once product table and functionality are implemented
@@ -30,10 +32,12 @@ public class LineItem {
 	private Integer productId;
 
 	@Column(name="unit_price")
+	@NotNull
 	@DecimalMin(value="0.01")
 	@Digits(integer=8, fraction=2)
 	private BigDecimal unitPrice;
 	
+	@NotNull
 	private Integer quantity;
 	
 	// NOTE: These properties are set in the database

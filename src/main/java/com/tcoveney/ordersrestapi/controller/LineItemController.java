@@ -6,6 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +26,7 @@ import com.tcoveney.ordersrestapi.validator.ValidationUtils;
 // "http://vue-client-for-spring-rest.localhost" - Apache2 virtualhost for vue client
 @CrossOrigin(origins = {"http://localhost:9000", "http://vue-client-for-spring-rest.localhost"})
 public class LineItemController {
+	private static Logger logger = LoggerFactory.getLogger(LineItemController.class);
 	private LineItemDao lineItemDao;
 	private ValidationUtils validationUtils;
 	
@@ -38,7 +41,8 @@ public class LineItemController {
 	}
 	
 	@PostMapping(value = "/", consumes = "application/json")
-	public void insert(@RequestBody @Valid LineItem lineItem, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response) {
+	public void insert(@RequestBody @Valid LineItem lineItem, BindingResult bindingResult,
+			HttpServletRequest request, HttpServletResponse response) {
 		if (bindingResult.hasErrors()) {
 			validationUtils.createValidationErrorsResponse(bindingResult, response);
 		}
