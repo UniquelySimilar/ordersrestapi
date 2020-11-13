@@ -26,6 +26,15 @@ public class LineItemDaoHibernateImpl implements LineItemDao {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
+	public List<LineItem> findByOrder(int orderId) {
+		Session session = sessionFactory.getCurrentSession();
+		List<LineItem> lineItems = session.createQuery("from LineItem where orderId = :orderId")
+				.setParameter("orderId", orderId).list();
+		return lineItems;
+	}
+
+	@Override
 	public int insert(LineItem lineItem) {
 		Session session = sessionFactory.getCurrentSession();
 		return (Integer)session.save(lineItem);

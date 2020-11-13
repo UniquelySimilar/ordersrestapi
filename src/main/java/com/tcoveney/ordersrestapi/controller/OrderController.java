@@ -1,5 +1,7 @@
 package com.tcoveney.ordersrestapi.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
@@ -16,8 +18,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tcoveney.ordersrestapi.dao.LineItemDao;
 import com.tcoveney.ordersrestapi.dao.OrderDao;
 import com.tcoveney.ordersrestapi.exception.ResourceNotFoundException;
+import com.tcoveney.ordersrestapi.model.LineItem;
 import com.tcoveney.ordersrestapi.model.Order;
 import com.tcoveney.ordersrestapi.validator.ValidationUtils;
 
@@ -30,10 +34,12 @@ public class OrderController {
 	private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
 	
 	private OrderDao orderDao;
+	private LineItemDao lineItemDao;
 	private ValidationUtils validationUtils;
 	
-	public OrderController(OrderDao orderDao, ValidationUtils validationUtils) {
+	public OrderController(OrderDao orderDao, LineItemDao lineItemDao, ValidationUtils validationUtils) {
 		this.orderDao = orderDao;
+		this.lineItemDao = lineItemDao;
 		this.validationUtils = validationUtils;
 	}
 
@@ -44,6 +50,20 @@ public class OrderController {
 		if (null == order) {
 			throw new ResourceNotFoundException();
 		}
+		return order;
+	}
+	
+	@GetMapping("/{id}/lineitems")
+	public Order findWithLineItems(@PathVariable int id) {
+		Order order = orderDao.find(id);
+		if (null == order) {
+			throw new ResourceNotFoundException();
+		}
+		else {
+			List<LineItem> lineItems = lineItemDao.findByOrder(id);
+			order.setLineItems(lineItems);
+		}
+		
 		return order;
 	}
 	

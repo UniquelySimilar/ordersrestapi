@@ -74,14 +74,14 @@ public class CustomerController {
 		return customerDao.findByLastName(lastName);
 	}
 	
-	@GetMapping("/{customerId}/orders")
-	public Customer findWithOrders(@PathVariable int customerId, HttpServletResponse response){
-		Customer customer = customerDao.find(customerId);
+	@GetMapping("/{id}/orders")
+	public Customer findWithOrders(@PathVariable int id){
+		Customer customer = customerDao.find(id);
 		if (null == customer) {
 			throw new ResourceNotFoundException();
 		}
 		else {
-			List<Order> orders = orderDao.findByCustomer(customerId);
+			List<Order> orders = orderDao.findByCustomer(id);
 			customer.setOrders(orders);
 		}
 		return customer;
