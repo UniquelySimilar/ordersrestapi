@@ -61,10 +61,11 @@ public class TokenUserDaoHibernateImpl implements TokenUserDao {
 
 		// Check to see if token has expired (24 hrs)
 		Date currentDate = new Date();
-		String hql = "from TokenUser where token = :token and tokenExp > :currentDate";
+		java.sql.Date currentSqlDate = new java.sql.Date(currentDate.getTime());
+		String hql = "from TokenUser where token = :token and tokenExp > :currentSqlDate";
 		List<TokenUser> tokenUsers = session.createQuery(hql)
 				.setParameter("token", token)
-				.setParameter("currentDate", currentDate)
+				.setParameter("currentSqlDate", currentSqlDate)
 				.list();
 		if (tokenUsers.size() == 1) {
 			tokenUser = tokenUsers.get(0);

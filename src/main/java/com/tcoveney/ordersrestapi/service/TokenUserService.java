@@ -31,7 +31,7 @@ public class TokenUserService {
 			Date currentDate = new Date();
 			LocalDateTime localDateTime = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 			localDateTime = localDateTime.plusDays(1);
-			Date tokenExp = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+			java.sql.Date tokenExp = java.sql.Date.valueOf(localDateTime.toLocalDate());
 			tokenUser.setTokenExp(tokenExp);
 
 			// Obtain and set token

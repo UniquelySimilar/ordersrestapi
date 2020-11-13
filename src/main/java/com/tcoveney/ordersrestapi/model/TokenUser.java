@@ -1,13 +1,11 @@
 package com.tcoveney.ordersrestapi.model;
 
-import java.util.Date;
+import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "tokenusersspring")
@@ -23,7 +21,6 @@ public class TokenUser {
 	private String token;
 	
 	@Column(name="tokenexp")
-	@Temporal(TemporalType.TIMESTAMP)
 	private Date tokenExp;
 	
 	@Column
