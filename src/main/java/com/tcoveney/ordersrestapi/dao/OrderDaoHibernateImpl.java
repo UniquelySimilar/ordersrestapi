@@ -1,13 +1,11 @@
 package com.tcoveney.ordersrestapi.dao;
 
-import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,12 +15,12 @@ import com.tcoveney.ordersrestapi.model.Order;
 @Transactional
 public class OrderDaoHibernateImpl implements OrderDao {
 	public static final Logger logger = LoggerFactory.getLogger(OrderDaoHibernateImpl.class);
+	
 	private SessionFactory sessionFactory;
 
-    @Autowired
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
+	public OrderDaoHibernateImpl(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
 
 	@Override
 	@SuppressWarnings("unchecked")
@@ -60,8 +58,7 @@ public class OrderDaoHibernateImpl implements OrderDao {
 	@Override
 	public void delete(int id) {
 		Session session = sessionFactory.getCurrentSession();
-		Order order = new Order();
-		order.setId(id);
+		Order order = session.load(Order.class, id);
 		session.delete(order);
 	}
 

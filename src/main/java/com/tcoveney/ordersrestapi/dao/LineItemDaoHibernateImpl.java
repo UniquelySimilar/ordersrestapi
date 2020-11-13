@@ -31,4 +31,17 @@ public class LineItemDaoHibernateImpl implements LineItemDao {
 		return (Integer)session.save(lineItem);
 	}
 
+	@Override
+	public void update(LineItem lineItem) {
+		Session session = sessionFactory.getCurrentSession();
+		session.update(lineItem);
+	}
+
+	@Override
+	public void delete(int id) {
+		Session session = sessionFactory.getCurrentSession();
+		LineItem lineItem = session.load(LineItem.class, id);
+		session.delete(lineItem);
+	}
+	
 }

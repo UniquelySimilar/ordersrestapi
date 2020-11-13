@@ -8,7 +8,6 @@ import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,14 +34,15 @@ import com.tcoveney.ordersrestapi.validator.ValidationUtils;
 public class CustomerController {
 	private static final Logger logger = LoggerFactory.getLogger(CustomerController.class);
 
-	@Autowired
 	private ValidationUtils validationUtils;
-	
-	@Autowired
 	private CustomerDao customerDao;
-	
-	@Autowired
 	private OrderDao orderDao;
+	
+	CustomerController(CustomerDao customerDao, OrderDao orderDao, ValidationUtils validationUtils) {
+		this.customerDao = customerDao;
+		this.orderDao = orderDao;
+		this.validationUtils = validationUtils;
+	}
 
 	@GetMapping("/")
 	public List<Customer> findAll() {
@@ -99,8 +99,8 @@ public class CustomerController {
 		}
 	}
 	
-	@PutMapping(value = "/", headers = "content-type=application/json")
-	public void update(@RequestBody @Valid Customer customer, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response) {
+	@PutMapping(value = "/{id}", headers = "content-type=application/json")
+	public void update(@PathVariable int id, @RequestBody @Valid Customer customer, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response) {
 		if (bindingResult.hasErrors()) {
 			validationUtils.createValidationErrorsResponse(bindingResult, response);
 		}

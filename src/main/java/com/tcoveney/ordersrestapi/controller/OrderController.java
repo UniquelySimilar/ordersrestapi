@@ -5,7 +5,6 @@ import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,12 +29,14 @@ import com.tcoveney.ordersrestapi.validator.ValidationUtils;
 public class OrderController {
 	private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
 	
-	@Autowired
+	private OrderDao orderDao;
 	private ValidationUtils validationUtils;
 	
-	@Autowired
-	private OrderDao orderDao;
-	
+	public OrderController(OrderDao orderDao, ValidationUtils validationUtils) {
+		this.orderDao = orderDao;
+		this.validationUtils = validationUtils;
+	}
+
 	@GetMapping("/{id}")
 	public Order find(@PathVariable int id) {
 		//logger.debug("Called 'find()'");
@@ -60,8 +61,8 @@ public class OrderController {
 		}
 	}
 	
-	@PutMapping(value = "/", headers = "content-type=application/json")
-	public void update(@RequestBody @Valid Order order, BindingResult bindingResult, HttpServletResponse response) {
+	@PutMapping(value = "/{id}", headers = "content-type=application/json")
+	public void update(@PathVariable int id, @RequestBody @Valid Order order, BindingResult bindingResult, HttpServletResponse response) {
 		//logger.debug(order.toString());
 		if (bindingResult.hasErrors()) {
 			validationUtils.createValidationErrorsResponse(bindingResult, response);

@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -25,7 +26,7 @@ public class ValidationUtils {
 	private MessageSource messageSource;
 	
 	public void createValidationErrorsResponse(BindingResult bindingResult, HttpServletResponse response) {
-		response.setStatus(400);
+		response.setStatus(HttpStatus.BAD_REQUEST.value());
 		response.setContentType("application/json");
 		//logger.debug(result.getAllErrors());
         ObjectMapper mapper = new ObjectMapper();

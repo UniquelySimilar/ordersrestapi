@@ -81,10 +81,6 @@ public class Customer {
 		return id;
 	}
 	
-	public void setId(Integer id) {
-		this.id = id;
-	}
-	
 	public String getFirstName() {
 		return firstName;
 	}
