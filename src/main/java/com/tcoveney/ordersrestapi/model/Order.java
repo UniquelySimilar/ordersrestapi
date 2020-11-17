@@ -1,6 +1,7 @@
 package com.tcoveney.ordersrestapi.model;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -15,6 +16,8 @@ import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Range;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "orders")
@@ -33,14 +36,17 @@ public class Order {
 	// TODO: Currently limited to values provided via Datepickers in client app.  Possibly implement format validation in the future.
 	@Column(name = "order_date")
 	@NotNull()
-	private Date orderDate;
+	@JsonFormat(shape = JsonFormat.Shape.STRING)
+	private LocalDate orderDate;
 	
 	@Column(name = "required_date")
 	@NotNull()
-	private Date requiredDate;
+	@JsonFormat(shape = JsonFormat.Shape.STRING)
+	private LocalDate requiredDate;
 	
 	@Column(name = "shipped_date")
-	private Date shippedDate;
+	@JsonFormat(shape = JsonFormat.Shape.STRING)
+	private LocalDate shippedDate;
 	
 	@Column(name = "created_at", updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
@@ -76,27 +82,27 @@ public class Order {
 		this.orderStatus = orderStatus;
 	}
 
-	public Date getOrderDate() {
+	public LocalDate getOrderDate() {
 		return orderDate;
 	}
 
-	public void setOrderDate(Date orderDate) {
+	public void setOrderDate(LocalDate orderDate) {
 		this.orderDate = orderDate;
 	}
 
-	public Date getRequiredDate() {
+	public LocalDate getRequiredDate() {
 		return requiredDate;
 	}
 
-	public void setRequiredDate(Date requiredDate) {
+	public void setRequiredDate(LocalDate requiredDate) {
 		this.requiredDate = requiredDate;
 	}
 
-	public Date getShippedDate() {
+	public LocalDate getShippedDate() {
 		return shippedDate;
 	}
 
-	public void setShippedDate(Date shippedDate) {
+	public void setShippedDate(LocalDate shippedDate) {
 		this.shippedDate = shippedDate;
 	}
 

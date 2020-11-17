@@ -45,7 +45,6 @@ public class OrderController {
 
 	@GetMapping("/{id}")
 	public Order find(@PathVariable int id) {
-		//logger.debug("Called 'find()'");
 		Order order = orderDao.find(id);
 		if (null == order) {
 			throw new ResourceNotFoundException();

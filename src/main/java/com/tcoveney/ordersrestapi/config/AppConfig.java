@@ -21,7 +21,9 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.tcoveney.ordersrestapi.model.Customer;
 import com.tcoveney.ordersrestapi.model.LineItem;
 import com.tcoveney.ordersrestapi.model.Order;
@@ -83,6 +85,9 @@ public class AppConfig implements WebMvcConfigurer {
         ObjectMapper mapper = new ObjectMapper();
         //Registering Hibernate5Module to support lazy objects
         mapper.registerModule(new Hibernate5Module());
+        
+        // Register JavaTimeModule to support Java 8 Date and Time API
+        mapper.registerModule(new JavaTimeModule());
 
         messageConverter.setObjectMapper(mapper);
         return messageConverter;
