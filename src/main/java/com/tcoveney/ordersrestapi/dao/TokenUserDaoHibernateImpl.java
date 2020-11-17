@@ -1,5 +1,6 @@
 package com.tcoveney.ordersrestapi.dao;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -59,13 +60,12 @@ public class TokenUserDaoHibernateImpl implements TokenUserDao {
 		TokenUser tokenUser = null;
 		Session session = sessionFactory.getCurrentSession();
 
-		// Check to see if token has expired (24 hrs)
-		Date currentDate = new Date();
-		java.sql.Date currentSqlDate = new java.sql.Date(currentDate.getTime());
-		String hql = "from TokenUser where token = :token and tokenExp > :currentSqlDate";
+		// Check to see if token has expired
+		LocalDate today = LocalDate.now();
+		String hql = "from TokenUser where token = :token and tokenExp > :today";
 		List<TokenUser> tokenUsers = session.createQuery(hql)
 				.setParameter("token", token)
-				.setParameter("currentSqlDate", currentSqlDate)
+				.setParameter("today", today)
 				.list();
 		if (tokenUsers.size() == 1) {
 			tokenUser = tokenUsers.get(0);

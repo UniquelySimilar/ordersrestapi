@@ -1,6 +1,6 @@
 package com.tcoveney.ordersrestapi.model;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,7 +21,7 @@ public class TokenUser {
 	private String token;
 	
 	@Column(name="tokenexp")
-	private Date tokenExp;
+	private LocalDate tokenExp;
 	
 	@Column
 	private boolean enabled;
@@ -50,11 +50,11 @@ public class TokenUser {
 		this.token = token;
 	}
 
-	public Date getTokenExp() {
+	public LocalDate getTokenExp() {
 		return tokenExp;
 	}
 
-	public void setTokenExp(Date tokenExp) {
+	public void setTokenExp(LocalDate tokenExp) {
 		this.tokenExp = tokenExp;
 	}
 

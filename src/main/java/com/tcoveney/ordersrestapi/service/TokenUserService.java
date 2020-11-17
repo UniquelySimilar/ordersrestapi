@@ -1,8 +1,6 @@
 package com.tcoveney.ordersrestapi.service;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -27,12 +25,10 @@ public class TokenUserService {
 		String retVal = "";
 		TokenUser tokenUser = tokenUserDao.find(username, password);
 		if (null != tokenUser) {
-			// Calculate and set token expiration date/time (24 hours) 
-			Date currentDate = new Date();
-			LocalDateTime localDateTime = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-			localDateTime = localDateTime.plusDays(1);
-			java.sql.Date tokenExp = java.sql.Date.valueOf(localDateTime.toLocalDate());
-			tokenUser.setTokenExp(tokenExp);
+			// Calculate and set token expiration date (next day) 
+			LocalDate today = LocalDate.now();
+			LocalDate tomorrow = today.plusDays(1);
+			tokenUser.setTokenExp(tomorrow);
 
 			// Obtain and set token
 			String token = UUID.randomUUID().toString();
