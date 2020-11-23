@@ -13,6 +13,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -38,6 +40,8 @@ public class LineItem {
 	private BigDecimal unitPrice;
 	
 	@NotNull
+	@Min(1)
+	@Max(100000)
 	private Integer quantity;
 	
 	// NOTE: These properties are set in the database

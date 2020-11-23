@@ -24,6 +24,12 @@ public class LineItemDaoHibernateImpl implements LineItemDao {
 		Session session = sessionFactory.getCurrentSession();
 		return session.createQuery("from LineItem").list();
 	}
+	
+	@Override
+	public LineItem find(int id) {
+		Session session = sessionFactory.getCurrentSession();
+		return session.get(LineItem.class, id);
+	}
 
 	@Override
 	@SuppressWarnings("unchecked")

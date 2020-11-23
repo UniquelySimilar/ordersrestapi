@@ -44,6 +44,11 @@ public class LineItemController {
 		return lineItemDao.findAll();
 	}
 	
+	@GetMapping("/{id}")
+	LineItem find(@PathVariable int id) {
+		return lineItemDao.find(id);
+	}
+	
 	@PostMapping(value = "/", consumes = "application/json")
 	public void insert(@RequestBody @Valid LineItem lineItem, BindingResult bindingResult,
 			HttpServletRequest request, HttpServletResponse response) {
