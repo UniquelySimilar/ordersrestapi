@@ -26,10 +26,12 @@ public class Customer {
 	private Integer id;
 	
 	@Column(name = "first_name")
+	@NotBlank
 	@Size( min = 1,max = 30)
 	private String firstName;
 	
 	@Column(name = "last_name")
+	@NotBlank
 	@Size( min = 1,max = 30)
 	private String lastName;
 	
