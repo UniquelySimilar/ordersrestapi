@@ -27,8 +27,14 @@ public class ProductDaoHibernateImpl implements ProductDao {
 
 	@Override
 	public Product find(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		Session session = sessionFactory.getCurrentSession();
+		return (Product)session.get(Product.class, id);
+	}
+
+	@Override
+	public int insert(Product product) {
+		Session session = sessionFactory.getCurrentSession();
+		return (Integer)session.save(product);
 	}
 
 }

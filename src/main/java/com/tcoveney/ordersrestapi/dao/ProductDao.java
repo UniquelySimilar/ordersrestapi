@@ -7,5 +7,5 @@ import com.tcoveney.ordersrestapi.model.Product;
 public interface ProductDao {
 	public List<Product> findAll();
 	public Product find(int id);
-
+	public int insert(Product product);
 }
