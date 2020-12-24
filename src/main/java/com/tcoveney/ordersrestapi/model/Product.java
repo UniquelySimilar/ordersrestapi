@@ -11,7 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Table;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -30,6 +33,9 @@ public class Product {
 	private String description;
 	
 	@Column(name = "unit_price")
+	@NotNull
+	@DecimalMin(value="0.01")
+	@Digits(integer=8, fraction=2)
 	private BigDecimal unitPrice;
 	
 	@Column(name = "created_at", updatable = false)

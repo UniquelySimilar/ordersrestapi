@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -22,8 +21,11 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 public class ValidationUtils {
 	private static final Logger logger = LoggerFactory.getLogger(ValidationUtils.class);
 
-	@Autowired
 	private MessageSource messageSource;
+	
+	ValidationUtils(MessageSource messageSource) {
+		this.messageSource = messageSource;
+	}
 	
 	public void createValidationErrorsResponse(BindingResult bindingResult, HttpServletResponse response) {
 		response.setStatus(HttpStatus.BAD_REQUEST.value());
@@ -43,6 +45,18 @@ public class ValidationUtils {
 		// Add array of error message JSON objects to response
 		try {
 			response.getWriter().write(arrayNode.toString());
+			response.getWriter().flush();
+		}
+		catch(IOException ioe) {
+			logger.error("Error writing to response", ioe);
+		}
+	}
+	
+	public void createUniqueViolationResponse(String field, String message, HttpServletResponse response) {
+		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+		String responseBody = "[{\"field\":\"" + field + "\",\"message\":\"" + message+ "\"}]";
+		try {
+			response.getWriter().write(responseBody);
 			response.getWriter().flush();
 		}
 		catch(IOException ioe) {
