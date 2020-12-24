@@ -15,9 +15,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -70,6 +72,28 @@ public class ProductController {
 				validationUtils.createUniqueViolationResponse("name", "Name must be unique", response);
 			}
 		}
+	}
+	
+	@PutMapping("/")
+	public void update(@RequestBody @Valid Product product, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response) {
+		if (bindingResult.hasErrors()) {
+			validationUtils.createValidationErrorsResponse(bindingResult, response);
+		}
+		else {
+			try {
+				productDao.update(product);
+			}
+			// Process unique constraint violation
+			catch (DataIntegrityViolationException dive) {
+				validationUtils.createUniqueViolationResponse("name", "Name must be unique", response);
+			}
+		}
+	}
+	
+	@DeleteMapping("/{id}")
+	public void delete(@PathVariable int id) {
+		// TODO: Verify that this product is not associated with any line items.  If so, abort and send message to user.
+		productDao.delete(id);
 	}
 
 }

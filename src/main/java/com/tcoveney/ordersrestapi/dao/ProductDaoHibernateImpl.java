@@ -37,4 +37,19 @@ public class ProductDaoHibernateImpl implements ProductDao {
 		return (Integer)session.save(product);
 	}
 
+	@Override
+	public void update(Product product) {
+		Session session = sessionFactory.getCurrentSession();
+		// NOTE: When using 'merge()' instead of 'update()', if a record with this id does not exist,
+		// a new record is created, which is NOT what I want.
+		session.update(product);
+	}
+
+	@Override
+	public void delete(int id) {
+		Session session = sessionFactory.getCurrentSession();
+		Product product = session.load(Product.class, id);
+		session.delete(product);
+	}
+
 }
