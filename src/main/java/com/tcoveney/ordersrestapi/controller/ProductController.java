@@ -1,6 +1,7 @@
 package com.tcoveney.ordersrestapi.controller;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -69,7 +70,7 @@ public class ProductController {
 			}
 			// Process unique constraint violation
 			catch (DataIntegrityViolationException dive) {
-				validationUtils.createUniqueViolationResponse("name", "Name must be unique", response);
+				validationUtils.createDataIntegrityViolationResponse("name", "Name must be unique", response);
 			}
 		}
 	}
@@ -85,15 +86,34 @@ public class ProductController {
 			}
 			// Process unique constraint violation
 			catch (DataIntegrityViolationException dive) {
-				validationUtils.createUniqueViolationResponse("name", "Name must be unique", response);
+				validationUtils.createDataIntegrityViolationResponse("name", "Name must be unique", response);
 			}
 		}
 	}
 	
 	@DeleteMapping("/{id}")
-	public void delete(@PathVariable int id) {
+	public void delete(@PathVariable int id, HttpServletResponse response) {
 		// TODO: Verify that this product is not associated with any line items.  If so, abort and send message to user.
-		productDao.delete(id);
+		try {
+			productDao.delete(id);
+		}
+		// Process constraint violation when product is associated with a line item.
+		catch (DataIntegrityViolationException dive) {
+			validationUtils.createDataIntegrityViolationResponse("warning",
+					"Product cannot be deleted when associated with a line item", response);
+		}
 	}
+	
+	// Create test data
+//	@GetMapping("/testdata")
+//	public void insertTestData() {
+//		for (int i = 1; i < 101; i++) {
+//			Product product = new Product();
+//			product.setName("product" + i);
+//			product.setDescription("product" + i + " description");
+//			product.setUnitPrice(new BigDecimal(i + ".99"));
+//			productDao.insert(product);
+//		}
+//	}
 
 }

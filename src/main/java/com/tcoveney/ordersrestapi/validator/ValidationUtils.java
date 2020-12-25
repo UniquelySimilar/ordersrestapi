@@ -52,7 +52,7 @@ public class ValidationUtils {
 		}
 	}
 	
-	public void createUniqueViolationResponse(String field, String message, HttpServletResponse response) {
+	public void createDataIntegrityViolationResponse(String field, String message, HttpServletResponse response) {
 		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		String responseBody = "[{\"field\":\"" + field + "\",\"message\":\"" + message+ "\"}]";
 		try {
