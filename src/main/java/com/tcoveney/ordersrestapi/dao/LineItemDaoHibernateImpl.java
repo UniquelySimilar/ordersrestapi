@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tcoveney.ordersrestapi.model.LineItem;
+import com.tcoveney.ordersrestapi.model.Product;
 
 @Repository
 @Transactional
@@ -43,12 +44,16 @@ public class LineItemDaoHibernateImpl implements LineItemDao {
 	@Override
 	public int insert(LineItem lineItem) {
 		Session session = sessionFactory.getCurrentSession();
+		Product product = session.get(Product.class, lineItem.getProduct().getId());
+		lineItem.setProduct(product);
 		return (Integer)session.save(lineItem);
 	}
 
 	@Override
 	public void update(LineItem lineItem) {
 		Session session = sessionFactory.getCurrentSession();
+		Product product = session.get(Product.class, lineItem.getProduct().getId());
+		lineItem.setProduct(product);
 		session.update(lineItem);
 	}
 

@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -28,11 +30,6 @@ public class LineItem {
 	@NotNull
 	private Integer orderId;
 
-	// TODO: Update once product table and functionality are implemented
-	//@Column(name="product_id", nullable=false, updatable=false)
-	@Column(name="product_id")
-	private Integer productId;
-
 	@Column(name="unit_price")
 	@NotNull
 	@DecimalMin(value="0.01")
@@ -43,8 +40,12 @@ public class LineItem {
 	@Min(1)
 	@Max(100000)
 	private Integer quantity;
+
+	@ManyToOne(optional = false)
+    @JoinColumn(name="product_id")
+	private Product product;
 	
-	// NOTE: These properties are set in the database
+	// NOTE: These date properties are set by the database
 	@Column(name = "created_at", updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdAt;
@@ -65,14 +66,6 @@ public class LineItem {
 		this.orderId = orderId;
 	}
 
-	public Integer getProductId() {
-		return productId;
-	}
-
-	public void setProductId(Integer productId) {
-		this.productId = productId;
-	}
-
 	public BigDecimal getUnitPrice() {
 		return unitPrice;
 	}
@@ -89,6 +82,14 @@ public class LineItem {
 		this.quantity = quantity;
 	}
 
+	public Product getProduct() {
+		return product;
+	}
+
+	public void setProduct(Product product) {
+		this.product = product;
+	}
+
 	public Date getCreatedAt() {
 		return createdAt;
 	}
@@ -99,7 +100,7 @@ public class LineItem {
 
 	@Override
 	public String toString() {
-		return "LineItem [id=" + id + ", orderId=" + orderId + ", productId=" + productId + ", unitPrice=" + unitPrice
+		return "LineItem [id=" + id + ", orderId=" + orderId + ", unitPrice=" + unitPrice
 				+ ", quantity=" + quantity + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
 	}
 

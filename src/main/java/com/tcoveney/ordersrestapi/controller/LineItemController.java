@@ -49,6 +49,11 @@ public class LineItemController {
 		return lineItemDao.find(id);
 	}
 	
+	@GetMapping("/{orderId}/order")
+	List<LineItem> findByOrder(@PathVariable int orderId) {
+		return lineItemDao.findByOrder(orderId);
+	}
+	
 	@PostMapping(value = "/", consumes = "application/json")
 	public void insert(@RequestBody @Valid LineItem lineItem, BindingResult bindingResult,
 			HttpServletRequest request, HttpServletResponse response) {
@@ -62,8 +67,8 @@ public class LineItemController {
 		}
 	}
 	
-	@PutMapping(value = "/{id}", consumes = "application/json")
-	public void update(@PathVariable int id, @RequestBody @Valid LineItem lineItem, BindingResult bindingResult,
+	@PutMapping(value = "/", consumes = "application/json")
+	public void update(@RequestBody @Valid LineItem lineItem, BindingResult bindingResult,
 			HttpServletRequest request, HttpServletResponse response) {
 		if (bindingResult.hasErrors()) {
 			validationUtils.createValidationErrorsResponse(bindingResult, response);
