@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Table;
@@ -37,6 +39,10 @@ public class Product {
 	@DecimalMin(value="0.01")
 	@Digits(integer=8, fraction=2)
 	private BigDecimal unitPrice;
+	
+	@ManyToOne(optional=false)
+	@JoinColumn(name="type_id")
+	private ProductType productType;
 	
 	@Column(name = "created_at", updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
@@ -72,6 +78,14 @@ public class Product {
 
 	public void setUnitPrice(BigDecimal unitPrice) {
 		this.unitPrice = unitPrice;
+	}
+
+	public ProductType getProductType() {
+		return productType;
+	}
+
+	public void setProductType(ProductType productType) {
+		this.productType = productType;
 	}
 
 	public Date getCreatedAt() {

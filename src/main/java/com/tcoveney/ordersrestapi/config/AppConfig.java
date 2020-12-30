@@ -28,6 +28,7 @@ import com.tcoveney.ordersrestapi.model.Customer;
 import com.tcoveney.ordersrestapi.model.LineItem;
 import com.tcoveney.ordersrestapi.model.Order;
 import com.tcoveney.ordersrestapi.model.Product;
+import com.tcoveney.ordersrestapi.model.ProductType;
 import com.tcoveney.ordersrestapi.model.TokenUser;
 import com.zaxxer.hikari.HikariDataSource;
 
@@ -47,7 +48,13 @@ public class AppConfig implements WebMvcConfigurer {
 	LocalSessionFactoryBean hibernateSessionFactory() throws NamingException {
 		LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
 		sessionFactory.setDataSource(dataSource());
-		sessionFactory.setAnnotatedClasses(Customer.class, Order.class, TokenUser.class, LineItem.class, Product.class);
+		sessionFactory.setAnnotatedClasses(
+				Customer.class,
+				Order.class,
+				TokenUser.class,
+				LineItem.class,
+				Product.class,
+				ProductType.class);
 		sessionFactory.setHibernateProperties(hibernateProperties());
 		
 		return sessionFactory;

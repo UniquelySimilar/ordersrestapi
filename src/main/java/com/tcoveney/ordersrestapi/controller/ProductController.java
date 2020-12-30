@@ -12,7 +12,6 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -26,7 +25,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tcoveney.ordersrestapi.dao.ProductDao;
+import com.tcoveney.ordersrestapi.dao.ProductTypeDao;
 import com.tcoveney.ordersrestapi.model.Product;
+import com.tcoveney.ordersrestapi.model.ProductType;
 import com.tcoveney.ordersrestapi.validator.ValidationUtils;
 
 @RestController
@@ -38,10 +39,12 @@ public class ProductController {
 	private static final Logger logger = LoggerFactory.getLogger(CustomerController.class);
 
 	private ProductDao productDao;
+	private ProductTypeDao productTypeDao;
 	private ValidationUtils validationUtils;
 	
-	ProductController(ProductDao productDao, ValidationUtils validationUtils) {
+	ProductController(ProductDao productDao, ProductTypeDao productTypeDao, ValidationUtils validationUtils) {
 		this.productDao = productDao;
+		this.productTypeDao = productTypeDao;
 		this.validationUtils = validationUtils;
 	}
 	
@@ -105,15 +108,36 @@ public class ProductController {
 	}
 	
 	// Create test data
-//	@GetMapping("/testdata")
-//	public void insertTestData() {
-//		for (int i = 1; i < 101; i++) {
-//			Product product = new Product();
-//			product.setName("product" + i);
-//			product.setDescription("product" + i + " description");
-//			product.setUnitPrice(new BigDecimal(i + ".99"));
-//			productDao.insert(product);
-//		}
-//	}
+	@GetMapping("/testdata")
+	public void insertTestData(HttpServletResponse response) {
+		List<Product> products = productDao.findAll();
+		if (!products.isEmpty()){
+			// Test data already exists
+			logger.warn("Product data already exists");
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			String responseBody = "{\"warning\":\"Product data already exists\"}";
+			try {
+				response.getWriter().write(responseBody);
+				response.getWriter().flush();
+			}
+			catch(IOException ioe) {
+				logger.error("Error writing to response", ioe);
+			}
+			return;
+		}
+		
+		List<ProductType> productTypeList = productTypeDao.findAll();
+		productTypeList.forEach( productType -> {
+			for (int i = 1; i < 21; i++) {
+				String productName = productType.getName() + i;
+				Product product = new Product();
+				product.setName(productName);
+				product.setDescription(productName + " description");
+				product.setUnitPrice(new BigDecimal(i + ".99"));
+				product.setProductType(productType);
+				productDao.insert(product);
+			}
+		});
+	}
 
 }
