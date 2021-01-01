@@ -36,7 +36,7 @@ import com.tcoveney.ordersrestapi.validator.ValidationUtils;
 //"http://vue-client-for-spring-rest.localhost" - Apache2 virtualhost for vue client
 @CrossOrigin(origins = {"http://localhost:9000", "http://vue-client-for-spring-rest.localhost"})
 public class ProductController {
-	private static final Logger logger = LoggerFactory.getLogger(CustomerController.class);
+	private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 
 	private ProductDao productDao;
 	private ProductTypeDao productTypeDao;
