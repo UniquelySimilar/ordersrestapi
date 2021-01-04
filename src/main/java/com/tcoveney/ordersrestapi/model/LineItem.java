@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.Valid;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Max;
@@ -43,6 +44,7 @@ public class LineItem {
 
 	@ManyToOne(optional = false)
     @JoinColumn(name="product_id")
+	@Valid
 	private Product product;
 	
 	// NOTE: These date properties are set by the database
