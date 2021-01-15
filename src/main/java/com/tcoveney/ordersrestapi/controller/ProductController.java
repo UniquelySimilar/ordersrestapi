@@ -72,8 +72,8 @@ public class ProductController {
 				response.addHeader( "Location", request.getRequestURL().append( Integer.toString(newProductId) ).toString() );
 			}
 			// Process unique constraint violation
-			catch (DataIntegrityViolationException dive) {
-				validationUtils.createDataIntegrityViolationResponse("name", "Name must be unique", response);
+			catch (DataIntegrityViolationException divEx) {
+				createProductDataIntegrityViolationResponse(divEx, response);
 			}
 		}
 	}
@@ -88,8 +88,8 @@ public class ProductController {
 				productDao.update(product);
 			}
 			// Process unique constraint violation
-			catch (DataIntegrityViolationException dive) {
-				validationUtils.createDataIntegrityViolationResponse("name", "Name must be unique", response);
+			catch (DataIntegrityViolationException divEx) {
+				createProductDataIntegrityViolationResponse(divEx, response);
 			}
 		}
 	}
@@ -101,12 +101,41 @@ public class ProductController {
 			productDao.delete(id);
 		}
 		// Process constraint violation when product is associated with a line item.
-		catch (DataIntegrityViolationException dive) {
-			validationUtils.createDataIntegrityViolationResponse("warning",
-					"Product cannot be deleted when associated with a line item", response);
+		catch (DataIntegrityViolationException divEx) {
+			createProductDataIntegrityViolationResponse(divEx, response);
 		}
 	}
-	
+
+	private void createProductDataIntegrityViolationResponse(DataIntegrityViolationException divEx, HttpServletResponse response) {
+		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+		String rootMessage = divEx.getRootCause().getMessage();
+		String field = "warning";
+		String message = "see server log";
+		// Request did not contain productType id
+		if (rootMessage.contains("type_id")) {
+			field = "productType";
+			message = "Product type is required";
+		}
+		// Request contained an existing product name
+		else if (rootMessage.contains("name_UNIQUE")) {
+			field = "name";
+			message = "Name must be unique";
+		}
+		else if (rootMessage.contains("Cannot delete or update a parent row")) {
+			field = "warning";
+			message = "Product cannot be deleted when associated with a line item";
+		}
+
+		String responseBody = "[{\"field\":\"" + field + "\",\"message\":\"" + message+ "\"}]";
+		try {
+			response.getWriter().write(responseBody);
+			response.getWriter().flush();
+		}
+		catch(IOException ioe) {
+			logger.error("Error writing to response", ioe);
+		}
+	}
+
 	// Create test data
 	@GetMapping("/testdata")
 	public void insertTestData(HttpServletResponse response) {

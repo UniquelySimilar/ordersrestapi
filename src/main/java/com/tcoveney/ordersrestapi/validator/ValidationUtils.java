@@ -51,17 +51,5 @@ public class ValidationUtils {
 			logger.error("Error writing to response", ioe);
 		}
 	}
-	
-	public void createDataIntegrityViolationResponse(String field, String message, HttpServletResponse response) {
-		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-		String responseBody = "[{\"field\":\"" + field + "\",\"message\":\"" + message+ "\"}]";
-		try {
-			response.getWriter().write(responseBody);
-			response.getWriter().flush();
-		}
-		catch(IOException ioe) {
-			logger.error("Error writing to response", ioe);
-		}
-	}
 
 }
